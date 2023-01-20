@@ -21,6 +21,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import { Box } from '@mui/system';
 import { closeCardDialog, removeCard, selectCardData, updateCard } from '../../../store/cardSlice';
+import { newComment } from '../../../store/commentSlice';
 import CardActivity from './activity/CardActivity';
 import CardAttachment from './attachment/CardAttachment';
 import CardChecklist from './checklist/CardChecklist';
@@ -67,7 +68,10 @@ function BoardCardForm(props) {
   if (!card) {
     return null;
   }
-
+  function commentAdd (comment) {
+    setValue('activities', [comment, ...cardForm.activities])
+    dispatch(newComment(comment))
+  }
   return (
     <>
       <DialogContent className="flex flex-col sm:flex-row p-8">
@@ -287,9 +291,7 @@ function BoardCardForm(props) {
             </div>
             <div>
               <CardComment
-                onCommentAdd={(comment) =>
-                  setValue('activities', [comment, ...cardForm.activities])
-                }
+                onCommentAdd={commentAdd}
               />
             </div>
           </div>

@@ -23,7 +23,7 @@ function BoardSettingsSidebar(props) {
 
   const { watch, control, reset } = useForm({
     mode: 'onChange',
-    defaultValues: board.settings,
+    defaultValues: board.settings ||{subscribed: true,cardCoverImages: true},
   });
 
   const boardSettingsForm = watch();

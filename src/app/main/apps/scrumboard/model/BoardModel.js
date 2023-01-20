@@ -8,7 +8,7 @@ function BoardModel(data) {
     description: '',
     icon: 'heroicons-outline:template',
     // lastActivity: new Date(),
-    // members: [],
+    members: [],
     // settings: {
     //   subscribed: true,
     //   cardCoverImages: true,

@@ -132,7 +132,7 @@ function BoardListHeader(props) {
               color: 'text.secondary',
             }}
           >
-            {/* {cardIds.length} */}
+            {cardIds.length}
           </Box>
           <IconButton
             aria-owns={anchorEl ? 'actions-menu' : null}

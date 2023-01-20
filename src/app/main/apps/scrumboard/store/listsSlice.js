@@ -24,7 +24,6 @@ export const newList = createAsyncThunk(
     const response = await axios.post(`/api/v1/boards/${board.id}/lists`, ListModel(list));
 
     const data = await response.data.list;
-    console.log('response.data.boards', data)
     return data;
   }
 );

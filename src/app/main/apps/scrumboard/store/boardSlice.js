@@ -156,8 +156,9 @@ const boardsSlice = createSlice({
       state = {};
     },
     [removeCard.fulfilled]: (state, action) => {
+      console.log('payload', action.payload)
       const cardId = action.payload;
-
+      console.log('--------cardId', cardId, typeof(cardId))
       state.lists = state.lists.map((list) => ({
         ...list,
         cards: _.reject(list.cards, (id) => id === cardId),
@@ -165,7 +166,6 @@ const boardsSlice = createSlice({
     },
     [removeList.fulfilled]: (state, action) => {
       const listId = action.payload;
-
       state.lists = _.reject(state.lists, { id: listId });
     },
     [newList.fulfilled]: (state, action) => {
