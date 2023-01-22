@@ -56,7 +56,13 @@ function BoardCardForm(props) {
     if (!card) {
       return;
     }
+    
     if (!_.isEqual(card, cardForm)) {
+      if(!_.isEqual(card.activities, cardForm.activities)){
+        
+        console.log('cardForm.activities changed', cardForm)
+        
+      }
       updateCardData(cardForm);
     }
   }, [card, cardForm, updateCardData]);
@@ -289,7 +295,7 @@ function BoardCardForm(props) {
               <FuseSvgIcon size={20}>heroicons-outline:chat-alt</FuseSvgIcon>
               <Typography className="font-semibold text-16 mx-8">Comment</Typography>
             </div>
-            <div>
+            <div className='CardComment'>
               <CardComment
                 onCommentAdd={commentAdd}
               />
@@ -302,7 +308,7 @@ function BoardCardForm(props) {
             defaultValue={[]}
             render={({ field: { onChange, value } }) => (
               <div>
-                {value.length > 0 && (
+                {value?.length > 0 && (
                   <div className="mb-24">
                     <div className="flex items-center mt-16">
                       <FuseSvgIcon size={20}>heroicons-outline:clipboard-list</FuseSvgIcon>

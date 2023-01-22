@@ -42,7 +42,7 @@ export const removeCard = createAsyncThunk(
 
     const response = await axios.delete(`/api/v1/boards/${board.id}/cards/${card.data.id}`);
 
-    const data = await response.data;
+    const data = await response.data.card;
 
     dispatch(closeCardDialog());
 

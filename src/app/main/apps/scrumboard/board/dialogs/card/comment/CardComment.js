@@ -8,6 +8,7 @@ import * as yup from 'yup';
 import { useSelector } from 'react-redux';
 import { selectMemberById } from '../../../../store/membersSlice';
 import CommentModel from '../../../../model/CommentModel';
+import { selectUser } from 'app/store/userSlice';
 
 /**
  * Form Validation Schema
@@ -16,13 +17,18 @@ const schema = yup.object().shape({
   message: yup.string().required('You must enter a comment'),
 });
 
-const defaultValues = {
-  idMember: 'baa88231-0ee6-4028-96d5-7f187e0f4cd5',
-  message: '',
-};
+// const defaultValues = {
+//   idMember: '63b8eece76774b831b4b5c035',
+//   message: '',
+// };
 
 function CardComment(props) {
-  const user = useSelector((state) => selectMemberById(state, defaultValues.idMember));
+  // const user = useSelector((state) => selectMemberById(state, defaultValues.idMember));
+  const user = useSelector(selectUser);
+  const defaultValues = {
+    idMember: user.uuid,
+    message: '',
+  };
 
   const { control, formState, handleSubmit, reset } = useForm({
     mode: 'onChange',
@@ -43,7 +49,14 @@ function CardComment(props) {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex -mx-8">
-      <Avatar className="w-32 h-32 mx-8" alt={user.name} src={user.avatar} />
+      {/* <Avatar className="w-32 h-32 mx-8" alt={user.data.displayName} src={user.avatar} /> */}
+      <Avatar
+        className="w-32 h-32 mx-8 font-bold"
+        src={user.data.photoURL}
+        alt={user.data.displayName}
+      >
+        {user.data.displayName.charAt(0)}
+      </Avatar>
       <div className="flex flex-col items-start flex-1 mx-8">
         <Controller
           name="message"

@@ -1,16 +1,23 @@
-import { createAsyncThunk, createEntityAdapter, createSlice } from '@reduxjs/toolkit';
+import {
+  createAsyncThunk,
+  createEntityAdapter,
+  createSlice,
+} from '@reduxjs/toolkit';
 import axios from 'axios';
 import _ from '@lodash';
 import { removeList } from './listsSlice';
 import { removeCard, updateCard } from './cardSlice';
 import CardModel from '../model/CardModel';
 
-export const getCards = createAsyncThunk('scrumboardApp/cards/getCards', async (boardId) => {
-  const response = await axios.get(`/api/v1/boards/${boardId}/cards`);
-  const data = await response.data.cards;
+export const getCards = createAsyncThunk(
+  'scrumboardApp/cards/getCards',
+  async (boardId) => {
+    const response = await axios.get(`/api/v1/boards/${boardId}/cards`);
+    const data = await response.data.cards;
 
-  return data;
-});
+    return data;
+  }
+);
 
 export const newCard = createAsyncThunk(
   'scrumboardApp/cards/newCard',
@@ -29,9 +36,8 @@ export const newCard = createAsyncThunk(
 
 const cardsAdapter = createEntityAdapter({});
 
-export const { selectAll: selectCards, selectById: selectCardById } = cardsAdapter.getSelectors(
-  (state) => state.scrumboardApp.cards
-);
+export const { selectAll: selectCards, selectById: selectCardById } =
+  cardsAdapter.getSelectors((state) => state.scrumboardApp.cards);
 
 const cardsSlice = createSlice({
   name: 'scrumboardApp/cards',

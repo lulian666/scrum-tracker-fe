@@ -1,6 +1,5 @@
 import {
   createAsyncThunk,
-  createEntityAdapter,
   createSlice,
 } from '@reduxjs/toolkit';
 import axios from 'axios';
@@ -15,7 +14,7 @@ export const newComment = createAsyncThunk(
     const { board, card } = getState().scrumboardApp;
 
     const response = await axios.post(
-      `/api/v1/boards/${board.id}/cards/${card.data.id}`,
+      `/api/v1/boards/${board.id}/cards/${card.data.id}/comments`,
       CommentModel(comment)
     );
 
@@ -24,20 +23,13 @@ export const newComment = createAsyncThunk(
   }
 );
 
-const commentsAdapter = createEntityAdapter({});
-
-export const { selectAll: selectComments, selectById: selectCommentById } =
-  commentsAdapter.getSelectors((state) => state.scrumboardApp.comments);
 
 const commentsSlice = createSlice({
   name: 'scrumboardApp/comments',
-  initialState: commentsAdapter.getInitialState({}),
+  initialState: null,
   reducers: {
     resetComments: (state, action) => {},
-  },
-  extraReducers: {
-    [newComment.fulfilled]: commentsAdapter.addOne,
-  },
+  }
 });
 
 export const { resetComments } = commentsSlice.actions;

@@ -30,7 +30,7 @@ function BoardCard(props) {
   const card = useSelector((state) => selectCardById(state, cardId));
   const members = useSelector(selectMembers);
   const commentsCount = getCommentsCount(card);
-  const cardCoverImage = _.find(card.attachments, { id: card.attachmentCoverId });
+  // const cardCoverImage = _.find(card.attachments, { id: card.attachmentCoverId });
 
   function handleCardClick(ev, _card) {
     ev.preventDefault();
@@ -38,7 +38,7 @@ function BoardCard(props) {
   }
 
   function getCommentsCount(_card) {
-    return _.sum(_card.activities?.map((x) => (x.type === 'comment' ? 1 : 0)));
+    return _.sum(_card.activities.map((x) => (x.type === 'comment' ? 1 : 0)));
   }
 
   return (
@@ -53,7 +53,11 @@ function BoardCard(props) {
             onClick={(ev) => handleCardClick(ev, card)}
           >
             {board.settings?.cardCoverImages && cardCoverImage && (
-              <img className="block" src={cardCoverImage.src} alt="card cover" />
+              <img
+                className="block"
+                src={cardCoverImage.src}
+                alt="card cover"
+              />
             )}
 
             <div className="p-16 pb-0">
@@ -96,7 +100,7 @@ function BoardCard(props) {
                       heroicons-outline:paper-clip
                     </FuseSvgIcon>
                     <Typography className="" color="text.secondary">
-                      {card?.attachments.length}
+                      {card.attachments?.length}
                     </Typography>
                   </span>
                 )}
@@ -117,7 +121,7 @@ function BoardCard(props) {
                 {card?.memberIds?.length > 0 && (
                   <div className="flex justify-start">
                     <AvatarGroup max={3} classes={{ avatar: 'w-24 h-24 text-12' }}>
-                      {card.memberIds.map((id) => {
+                      {card?.memberIds?.map((id) => {
                         const member = _.find(members, { id });
                         return (
                           <Tooltip title={member.name} key={id}>

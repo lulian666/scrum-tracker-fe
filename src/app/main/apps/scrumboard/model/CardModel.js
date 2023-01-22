@@ -13,10 +13,10 @@ function CardModel(data) {
     // dueDate: '',
     // attachmentCoverId: '',
     // memberIds: [],
-    // attachments: [],
+    attachments: [],
     // subscribed: true,
     // checklists: [],
-    // activities: [],
+    activities: [],
   });
 }
 export default CardModel;
