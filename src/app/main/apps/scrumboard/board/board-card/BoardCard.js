@@ -38,7 +38,7 @@ function BoardCard(props) {
   }
 
   function getCommentsCount(_card) {
-    return _.sum(_card.activities.map((x) => (x.type === 'comment' ? 1 : 0)));
+    return _.sum(_card?.activities?.map((x) => (x.type === 'comment' ? 1 : 0)));
   }
 
   return (

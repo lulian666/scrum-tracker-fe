@@ -34,9 +34,13 @@ function BoardItem(props) {
           <FuseSvgIcon>{board.icon}</FuseSvgIcon>
         </Box>
 
-        <Typography className="mt-20 text-lg font-medium leading-5">{board.title}</Typography>
+        <Typography className="mt-20 text-lg font-medium leading-5">
+          {board.title}
+        </Typography>
 
-        <Typography className="mt-2 line-clamp-2 text-secondary">{board.description}</Typography>
+        <Typography className="mt-2 line-clamp-2 text-secondary">
+          {board.description}
+        </Typography>
 
         <Divider className="w-48 mt-24 h-2" />
       </div>
@@ -48,7 +52,11 @@ function BoardItem(props) {
               <AvatarGroup max={4}>
                 {boardMembers.map((member, index) => (
                   // <Avatar key={index} alt="member" src={member.avatar} />
-                  <Avatar key={index} alt="member" src="assets/images/avatars/female-01.jpg" />
+                  <Avatar
+                    key={index}
+                    alt="member"
+                    src="assets/images/avatars/female-01.jpg"
+                  />
                 ))}
               </AvatarGroup>
             </div>
@@ -58,7 +66,9 @@ function BoardItem(props) {
         <div className="flex items-center mt-24 text-md font-md">
           <Typography color="text.secondary">Edited:</Typography>
           <Typography className="mx-4 truncate">
-            {/* {formatDistance(new Date(board.lastActivity), new Date(), { addSuffix: true })} */}
+            {formatDistance(new Date(board.updatedAt), new Date(), {
+              addSuffix: true,
+            })}
           </Typography>
         </div>
       </div>
