@@ -15,7 +15,7 @@ import BoardCardDialog from './dialogs/card/BoardCardDialog';
 import BoardSettingsSidebar from './sidebars/settings/BoardSettingsSidebar';
 import { getCards } from '../store/cardsSlice';
 import { getLists } from '../store/listsSlice';
-import { getLabels } from '../store/labelsSlice';
+// import { getLabels } from '../store/labelsSlice';
 import BoardHeader from './BoardHeader';
 
 function Board(props) {
@@ -30,7 +30,7 @@ function Board(props) {
     dispatch(getBoard(routeParams.boardId));
     dispatch(getCards(routeParams.boardId));
     dispatch(getLists(routeParams.boardId));
-    dispatch(getLabels(routeParams.boardId));
+    // dispatch(getLabels(routeParams.boardId));
 
     return () => {
       dispatch(resetBoard());

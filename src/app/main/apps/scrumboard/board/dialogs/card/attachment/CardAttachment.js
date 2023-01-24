@@ -3,10 +3,9 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
-import format from 'date-fns/format';
-import fromUnixTime from 'date-fns/fromUnixTime';
 import { useState } from 'react';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
+import { formatDistance } from 'date-fns';
 
 function CardAttachment(props) {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -22,16 +21,21 @@ function CardAttachment(props) {
   switch (props.item.type) {
     case 'image': {
       return (
-        <div className="flex w-full sm:w-1/2 mb-16 px-16" key={props.item.id}>
+        <div className="flex w-full sm:w-1/2 mb-16 px-16" key={props.item.id} style={{padding:'5px', marginTop:'5px'}}>
           <div className="flex items-center justify-center min-w-128 w-128 h-128">
             <Paper className="overflow-hidden shadow">
-              <img className="block max-h-full max-h-full" src={props.item.src} alt="attachment" />
+              <img
+                className="block max-h-full max-h-full"
+                src={props.item.src}
+                alt="attachment"
+                style={{ maxWidth: 'auto', maxHeight: '150px' }}
+              />
             </Paper>
           </div>
           <div className="flex flex-auto flex-col justify-center items-start min-w-0 px-16">
             <div className="flex items-center w-full">
               <Typography className="text-16 font-semibold truncate shrink">
-                {props.item.name}
+                {props.item.name || 'Image'}
               </Typography>
               {props.card.attachmentCoverId === props.item.id && (
                 <FuseSvgIcon className="text-orange-300 mx-4" size={20}>
@@ -39,8 +43,13 @@ function CardAttachment(props) {
                 </FuseSvgIcon>
               )}
             </div>
-            <Typography className="truncate w-full mb-12" color="text.secondary">
-              {format(fromUnixTime(props.item.time), 'Pp')}
+            <Typography
+              className="truncate w-full mb-12"
+              color="text.secondary"
+            >
+              {formatDistance(new Date(props.item.createdAt), new Date(), {
+                addSuffix: true,
+              })}
             </Typography>
             <Button
               aria-owns={anchorEl ? 'actions-menu' : null}
@@ -48,7 +57,11 @@ function CardAttachment(props) {
               onClick={handleMenuOpen}
               variant="outlined"
               size="small"
-              endIcon={<FuseSvgIcon size={16}>heroicons-outline:chevron-down</FuseSvgIcon>}
+              endIcon={
+                <FuseSvgIcon size={16}>
+                  heroicons-outline:chevron-down
+                </FuseSvgIcon>
+              }
             >
               Actions
             </Button>
@@ -58,7 +71,7 @@ function CardAttachment(props) {
               open={Boolean(anchorEl)}
               onClose={handleMenuClose}
             >
-              {props.card.attachmentCoverId !== props.item.id ? (
+              {/* {props.card.attachmentCoverId !== props.item.id ? (
                 <MenuItem
                   onClick={() => {
                     handleMenuClose();
@@ -76,7 +89,7 @@ function CardAttachment(props) {
                 >
                   Remove Cover
                 </MenuItem>
-              )}
+              )} */}
               <MenuItem
                 onClick={() => {
                   handleMenuClose();
@@ -100,7 +113,10 @@ function CardAttachment(props) {
             <Typography className="text-16 font-semibold truncate w-full">
               {props.item.url}
             </Typography>
-            <Typography className="truncate w-full mb-12" color="text.secondary">
+            <Typography
+              className="truncate w-full mb-12"
+              color="text.secondary"
+            >
               {props.item.time}
             </Typography>
             <Button
@@ -109,7 +125,11 @@ function CardAttachment(props) {
               onClick={handleMenuOpen}
               variant="outlined"
               size="small"
-              endIcon={<FuseSvgIcon size={16}>heroicons-outline:chevron-down</FuseSvgIcon>}
+              endIcon={
+                <FuseSvgIcon size={16}>
+                  heroicons-outline:chevron-down
+                </FuseSvgIcon>
+              }
             >
               Actions
             </Button>

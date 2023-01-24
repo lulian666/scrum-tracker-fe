@@ -18,6 +18,7 @@
         "@mui/x-data-grid": "5.17.14",
         "@mui/x-date-pickers": "5.0.10",
         "@reduxjs/toolkit": "1.8.6",
+        "antd": "^5.1.6",
         "autosuggest-highlight": "3.3.4",
         "axios": "1.2.1",
         "axios-mock-adapter": "1.21.2",

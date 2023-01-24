@@ -44,7 +44,11 @@ function BoardCard(props) {
   return (
     <Draggable draggableId={cardId} index={index} type="card">
       {(provided, snapshot) => (
-        <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
+        <div
+          ref={provided.innerRef}
+          {...provided.draggableProps}
+          {...provided.dragHandleProps}
+        >
           <StyledCard
             className={clsx(
               snapshot.isDragging ? 'shadow-lg' : 'shadow',
@@ -69,7 +73,9 @@ function BoardCard(props) {
                 </div>
               )}
 
-              <Typography className="font-medium mb-12">{card?.title}</Typography>
+              <Typography className="font-medium mb-12">
+                {card?.title}
+              </Typography>
 
               {(card?.dueDate || card?.checklists?.length > 0) && (
                 <div className="flex items-center mb-12 -mx-4">
@@ -104,7 +110,7 @@ function BoardCard(props) {
                     </Typography>
                   </span>
                 )}
-                {commentsCount > 0 && (
+                {
                   <span className="flex items-center space-x-2">
                     <FuseSvgIcon size={16} color="action">
                       heroicons-outline:chat
@@ -114,18 +120,25 @@ function BoardCard(props) {
                       {commentsCount}
                     </Typography>
                   </span>
-                )}
+                }
               </div>
 
               <div className="flex items-center justify-end space-x-12">
                 {card?.memberIds?.length > 0 && (
                   <div className="flex justify-start">
-                    <AvatarGroup max={3} classes={{ avatar: 'w-24 h-24 text-12' }}>
+                    <AvatarGroup
+                      max={3}
+                      classes={{ avatar: 'w-24 h-24 text-12' }}
+                    >
                       {card?.memberIds?.map((id) => {
                         const member = _.find(members, { id });
                         return (
                           <Tooltip title={member.name} key={id}>
-                            <Avatar key={index} alt="member" src={member.avatar} />
+                            <Avatar
+                              key={index}
+                              alt="member"
+                              src={member.avatar}
+                            />
                           </Tooltip>
                         );
                       })}

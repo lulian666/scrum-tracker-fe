@@ -12,8 +12,6 @@ import TextField from '@mui/material/TextField';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import Autocomplete from '@mui/material/Autocomplete';
-import fromUnixTime from 'date-fns/fromUnixTime';
-import getUnixTime from 'date-fns/getUnixTime';
 import format from 'date-fns/format';
 import { Controller, useForm } from 'react-hook-form';
 import { useEffect } from 'react';
@@ -22,6 +20,7 @@ import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import { Box } from '@mui/system';
 import {
   closeCardDialog,
+  getCard,
   removeCard,
   selectCardData,
   updateCard,
@@ -40,14 +39,38 @@ import LabelsMenu from './toolbar/LabelsMenu';
 import MembersMenu from './toolbar/MembersMenu';
 import CheckListMenu from './toolbar/CheckListMenu';
 import OptionsMenu from './toolbar/OptionsMenu';
+import { message, Upload } from 'antd';
+import { useState } from 'react';
+import { userLoggedOut } from 'app/store/userSlice';
+import { selectUser } from 'app/store/userSlice';
+import axios from 'axios';
+import AttachmentModel from '../../../model/AttachmentModel';
+import FuseUtils from '@fuse/utils';
+
+const beforeUpload = (file) => {
+  const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
+  if (!isJpgOrPng) {
+    message.error('You can only upload JPG/PNG file!');
+  }
+  const isLt10M = file.size / 1024 / 1024 < 10;
+  if (!isLt10M) {
+    message.error('Image must smaller than 10MB!');
+  }
+  return isJpgOrPng && isLt10M;
+};
 
 function BoardCardForm(props) {
   const dispatch = useDispatch();
   const board = useSelector(selectBoard);
-  const labels = useSelector(selectLabels);
+  // const labels = useSelector(selectLabels);
   const members = useSelector(selectMembers);
   const card = useSelector(selectCardData);
   const list = useSelector((state) => selectListById(state, card?.listId));
+  const [loading, setLoading] = useState(false);
+  const user = useSelector(selectUser);
+
+  const host = axios.defaults.baseURL;
+  const uploadURL = `${host}/api/v1/boards/${board?.id}/cards/${card?.id}/attachments`;
 
   const { register, watch, control, setValue } = useForm({
     mode: 'onChange',
@@ -58,18 +81,23 @@ function BoardCardForm(props) {
 
   const updateCardData = useDebounce((newCard) => {
     dispatch(updateCard(newCard));
-  }, 1000);
+  }, 600);
 
   useEffect(() => {
     if (!card) {
       return;
     }
 
-    if (!_.isEqual(card, cardForm)) {
+    if (
+      // only watch for title and description
+      !_.isEqual(card.title, cardForm.title) ||
+      !_.isEqual(card.description, cardForm.description) ||
+      !_.isEqual(card.activities.length, cardForm.activities.length) ||
+      !_.isEqual(card.attachments.length, cardForm.attachments.length)
+    ) {
       updateCardData(cardForm);
     }
   }, [card, cardForm, updateCardData]);
-
   // useEffect(() => {
   //   register('attachmentCoverId');
   // }, [register]);
@@ -80,7 +108,34 @@ function BoardCardForm(props) {
   function commentAdd(comment) {
     setValue('activities', [comment, ...cardForm.activities]);
     dispatch(newComment(comment));
+    // dispatch(getCard())
   }
+
+  function attachmentAdd(attachment) {
+    setValue('attachments', [attachment, ...cardForm.attachments]);
+    setValue('activities', [
+      AttachmentModel(attachment),
+      ...cardForm.activities,
+    ]);
+  }
+
+  const handleChange = (info) => {
+    if (info.file.status === 'uploading') {
+      setLoading(true);
+      return;
+    }
+    if (info.file.status === 'done') {
+      setLoading(false);
+      const newAttachment = info.file.response.attachment;
+      attachmentAdd(newAttachment);
+    }
+  };
+
+  const deleteAttachment = async (attachment) => {
+    const deleteAttachmentURL = `${host}/api/v1/boards/${board?.id}/cards/${card?.id}/attachments/${attachment.id}`;
+    await axios.delete(`${deleteAttachmentURL}`);
+  };
+
   return (
     <>
       <DialogContent className="flex flex-col sm:flex-row p-8">
@@ -271,7 +326,7 @@ function BoardCardForm(props) {
                   Attachments
                 </Typography>
               </div>
-              {/* <div className="flex flex-col sm:flex-row flex-wrap -mx-16">
+              <div className="flex flex-col sm:flex-row flex-wrap -mx-16">
                 {cardForm.attachments.map((item) => (
                   <CardAttachment
                     item={item}
@@ -282,7 +337,16 @@ function BoardCardForm(props) {
                     removeCover={() => {
                       setValue('attachmentCoverId', '');
                     }}
-                    removeAttachment={() => {
+                    removeAttachment={async () => {
+                      const deleteActivity = {
+                        idMember: user.uuid,
+                        message: `deleted attachment '${item.name}'`,
+                      };
+                      setValue('activities', [
+                        AttachmentModel(deleteActivity),
+                        ...cardForm.activities,
+                      ]);
+                      await deleteAttachment(item);
                       setValue(
                         'attachments',
                         _.reject(cardForm.attachments, { id: item.id })
@@ -291,7 +355,7 @@ function BoardCardForm(props) {
                     key={item.id}
                   />
                 ))}
-              </div> */}
+              </div>
             </div>
           )}
 
@@ -416,9 +480,33 @@ function BoardCardForm(props) {
                 control={control}
                 defaultValue={[]}
                 render={({ field: { onChange, value } }) => (
-                  <IconButton size="large">
-                    <FuseSvgIcon>heroicons-outline:paper-clip</FuseSvgIcon>
-                  </IconButton>
+                  <Upload
+                    showUploadList={false}
+                    action={uploadURL}
+                    data={{
+                      type: 'image',
+                      idMember: user.uuid,
+                      message: 'uploaded an image',
+                    }}
+                    beforeUpload={beforeUpload}
+                    onChange={handleChange}
+                  >
+                    {loading ? (
+                      <>
+                        <IconButton size="large">
+                          <FuseSvgIcon>feather:loader</FuseSvgIcon>
+                        </IconButton>
+                      </>
+                    ) : (
+                      <>
+                        <IconButton size="large">
+                          <FuseSvgIcon>
+                            heroicons-outline:paper-clip
+                          </FuseSvgIcon>
+                        </IconButton>
+                      </>
+                    )}
+                  </Upload>
                 )}
               />
 

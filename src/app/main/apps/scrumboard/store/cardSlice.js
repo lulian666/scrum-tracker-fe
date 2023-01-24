@@ -33,6 +33,24 @@ export const updateCard = createAsyncThunk(
 );
 
 /**
+ * Get Card
+ */
+export const getCard = createAsyncThunk(
+  'scrumboardApp/card/getCard',
+  async (params, { dispatch, getState }) => {
+    const { board, card } = getState().scrumboardApp;
+
+    const response = await axios.get(
+      `/api/v1/boards/${board.id}/lists/${card.data.listId}/cards/${card.data.id}`
+    );
+
+    const data = await response.data.card;
+
+    return data;
+  }
+);
+
+/**
  * Remove Card
  */
 export const removeCard = createAsyncThunk(
@@ -40,7 +58,9 @@ export const removeCard = createAsyncThunk(
   async (params, { dispatch, getState }) => {
     const { board, card } = getState().scrumboardApp;
 
-    const response = await axios.delete(`/api/v1/boards/${board.id}/cards/${card.data.id}`);
+    const response = await axios.delete(
+      `/api/v1/boards/${board.id}/cards/${card.data.id}`
+    );
 
     const data = await response.data.card;
 
@@ -70,12 +90,16 @@ const cardSlice = createSlice({
     [updateCard.fulfilled]: (state, action) => {
       state.data = action.payload;
     },
+    [getCard.fulfilled]: (state, action) => {
+      state.data = action.payload;
+    },
   },
 });
 
 export const { openCardDialog, closeCardDialog } = cardSlice.actions;
 
-export const selectCardDialogOpen = ({ scrumboardApp }) => scrumboardApp.card.dialogOpen;
+export const selectCardDialogOpen = ({ scrumboardApp }) =>
+  scrumboardApp.card.dialogOpen;
 export const selectCardData = ({ scrumboardApp }) => scrumboardApp.card.data;
 
 export default cardSlice.reducer;

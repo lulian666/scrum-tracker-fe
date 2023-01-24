@@ -2,17 +2,18 @@ import FuseUtils from '@fuse/utils';
 import getUnixTime from 'date-fns/getUnixTime';
 import _ from '@lodash';
 
-function CommentModel(data) {
+function AttachmentModel(data) {
   data = data || {};
 
   return _.defaults(data, {
     id: FuseUtils.generateGUID(),
-    type: 'comment',
+    type: 'image',
     idMember: null,
     message: '',
-    // time: getUnixTime(new Date()),
     createdAt: new Date(),
+    src: '',
+    name: '',
   });
 }
 
-export default CommentModel;
+export default AttachmentModel;
