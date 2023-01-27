@@ -9,7 +9,7 @@ function NotificationModel(data) {
     icon: 'heroicons-solid:star',
     title: '',
     description: '',
-    time: new Date().toISOString(),
+    createdAt: new Date().toISOString(),
     read: false,
     variant: 'default',
   });

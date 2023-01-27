@@ -14,9 +14,6 @@ import NotificationTemplate from 'app/theme-layouts/shared-components/notificati
 import NotificationModel from './model/NotificationModel';
 import NotificationCard from './NotificationCard';
 import {
-  addNotification,
-  dismissAll,
-  dismissItem,
   getNotifications,
   selectNotifications,
 } from './store/dataSlice';
@@ -43,13 +40,12 @@ function NotificationPanel(props) {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
 
-  // disable notification for now
-  // useEffect(() => {
-  //   /*
-	// 	Get Notifications from db
-	// 	 */
-  //   dispatch(getNotifications());
-  // }, [dispatch]);
+  useEffect(() => {
+    /*
+		Get Notifications from db
+		 */
+    dispatch(getNotifications());
+  }, [dispatch]);
 
   useEffect(() => {
     if (state) {
@@ -60,32 +56,6 @@ function NotificationPanel(props) {
 
   function handleClose() {
     dispatch(closeNotificationPanel());
-  }
-
-  function handleDismiss(id) {
-    dispatch(dismissItem(id));
-  }
-  function handleDismissAll() {
-    dispatch(dismissAll());
-  }
-
-  function demoNotification() {
-    const item = NotificationModel({ title: 'Great Job! this is awesome.' });
-
-    enqueueSnackbar(item.title, {
-      key: item.id,
-      // autoHideDuration: 3000,
-      content: () => (
-        <NotificationTemplate
-          item={item}
-          onClose={() => {
-            closeSnackbar(item.id);
-          }}
-        />
-      ),
-    });
-
-    dispatch(addNotification(item));
   }
 
   return (
@@ -104,20 +74,12 @@ function NotificationPanel(props) {
           <div className="flex flex-col">
             <div className="flex justify-between items-end pt-136 mb-36">
               <Typography className="text-28 font-semibold leading-none">Notifications</Typography>
-              <Typography
-                className="text-12 underline cursor-pointer"
-                color="secondary"
-                onClick={handleDismissAll}
-              >
-                dismiss all
-              </Typography>
             </div>
             {notifications.map((item) => (
               <NotificationCard
                 key={item.id}
                 className="mb-16"
                 item={item}
-                onClose={handleDismiss}
               />
             ))}
           </div>
@@ -129,11 +91,6 @@ function NotificationPanel(props) {
           </Typography>
         </div>
       )}
-      <div className="flex items-center justify-center py-16">
-        <Button size="small" variant="outlined" onClick={demoNotification}>
-          Create a notification example
-        </Button>
-      </div>
     </StyledSwipeableDrawer>
   );
 }

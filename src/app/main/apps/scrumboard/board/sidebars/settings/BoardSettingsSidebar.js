@@ -15,7 +15,12 @@ import _ from '@lodash';
 import { useDebounce, useDeepCompareEffect } from '@fuse/hooks';
 import { lighten } from '@mui/material/styles';
 import Box from '@mui/material/Box';
-import { deleteBoard, selectBoard, updateBoard } from '../../../store/boardSlice';
+import {
+  deleteBoard,
+  selectBoard,
+  updateBoard,
+} from '../../../store/boardSlice';
+import axios from 'axios';
 
 function BoardSettingsSidebar(props) {
   const dispatch = useDispatch();
@@ -23,7 +28,10 @@ function BoardSettingsSidebar(props) {
 
   const { watch, control, reset } = useForm({
     mode: 'onChange',
-    defaultValues: board.settings ||{subscribed: true,cardCoverImages: true},
+    defaultValues: board.settings || {
+      subscribed: true,
+      // cardCoverImages: true,
+    },
   });
 
   const boardSettingsForm = watch();
@@ -64,17 +72,25 @@ function BoardSettingsSidebar(props) {
         className="border-b-1"
       >
         <Toolbar className="flex items-center px-4">
-          <IconButton onClick={() => props.onSetSidebarOpen(false)} color="inherit" size="large">
+          <IconButton
+            onClick={() => props.onSetSidebarOpen(false)}
+            color="inherit"
+            size="large"
+          >
             <FuseSvgIcon>heroicons-outline:x</FuseSvgIcon>
           </IconButton>
-          <Typography className="px-4 font-medium text-16" color="inherit" variant="subtitle1">
+          <Typography
+            className="px-4 font-medium text-16"
+            color="inherit"
+            variant="subtitle1"
+          >
             Settings
           </Typography>
         </Toolbar>
       </Box>
 
       <List className="py-24">
-        <ListItem>
+        {/* <ListItem>
           <ListItemIcon className="min-w-40">
             <FuseSvgIcon>heroicons-outline:photograph</FuseSvgIcon>
           </ListItemIcon>
@@ -93,7 +109,7 @@ function BoardSettingsSidebar(props) {
               )}
             />
           </ListItemSecondaryAction>
-        </ListItem>
+        </ListItem> */}
 
         <ListItem>
           <ListItemIcon className="min-w-40">
@@ -106,8 +122,15 @@ function BoardSettingsSidebar(props) {
               control={control}
               render={({ field: { onChange, value } }) => (
                 <Switch
-                  onChange={(ev) => {
+                  onChange={async (ev) => {
                     onChange(ev.target.checked);
+                    // request update noti
+                    await axios.patch(
+                      `/api/v1/boards/${board.id}/notification`,
+                      {
+                        subscription: ev.target.checked,
+                      }
+                    );
                   }}
                   checked={value}
                 />

@@ -9,10 +9,10 @@ function BoardModel(data) {
     icon: 'heroicons-outline:template',
     // lastActivity: new Date(),
     members: [],
-    // settings: {
-    //   subscribed: true,
-    //   cardCoverImages: true,
-    // },
+    settings: {
+      subscribed: true,
+      // cardCoverImages: true,
+    },
     lists: [],
   });
 }

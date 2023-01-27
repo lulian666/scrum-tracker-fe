@@ -20,7 +20,6 @@ import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import { Box } from '@mui/system';
 import {
   closeCardDialog,
-  getCard,
   removeCard,
   selectCardData,
   updateCard,

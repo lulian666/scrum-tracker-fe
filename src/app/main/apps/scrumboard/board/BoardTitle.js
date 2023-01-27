@@ -100,7 +100,11 @@ function BoardTitle(props) {
           >
             {board.title}
           </Typography>
-          {board?.settings?.subscribed && <FuseSvgIcon>heroicons-outline:eye</FuseSvgIcon>}
+          {board.settings?.subscribed ? (
+            <FuseSvgIcon>heroicons-outline:eye</FuseSvgIcon>
+          ) : (
+            <FuseSvgIcon>heroicons-outline:eye-off</FuseSvgIcon>
+          )}
         </div>
       )}
     </div>

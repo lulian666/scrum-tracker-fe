@@ -61,24 +61,12 @@ function NotificationCard(props) {
           <div className="line-clamp-2" dangerouslySetInnerHTML={{ __html: item.description }} />
         )}
 
-        {item.item && (
+        {item.createdAt && (
           <Typography className="mt-8 text-sm leading-none " color="text.secondary">
-            {formatDistanceToNow(new Date(item.time), { addSuffix: true })}
+            {formatDistanceToNow(new Date(item.createdAt), { addSuffix: true })}
           </Typography>
         )}
       </div>
-
-      <IconButton
-        disableRipple
-        className="top-0 right-0 absolute p-8"
-        color="inherit"
-        size="small"
-        onClick={handleClose}
-      >
-        <FuseSvgIcon size={12} className="opacity-75" color="inherit">
-          heroicons-solid:x
-        </FuseSvgIcon>
-      </IconButton>
       {item.children}
     </Card>
   );
