@@ -3,10 +3,6 @@ import axios from 'axios';
 import jwtDecode from 'jwt-decode';
 import jwtServiceConfig from './jwtServiceConfig';
 
-/* eslint-disable camelcase */
-// axios.defaults.baseURL = 'http://localhost:3000';
-// axios.defaults.headers.common['Authorization'] = AUTH_TOKEN;
-
 class JwtService extends FuseUtils.EventEmitter {
   init() {
     this.setInterceptors();
@@ -26,7 +22,11 @@ class JwtService extends FuseUtils.EventEmitter {
             !err.config.__isRetryRequest
           ) {
             // if you ever get an unauthorized response, logout the user
-            this.emit('onAutoLogout', 'Invalid access_token');
+            if (err.response.data.message) {
+              this.emit('onAutoLogout', err.response.data.message);
+            } else {
+              this.emit('onAutoLogout', 'Invalid access_token');
+            }
             this.setSession(null);
           }
           throw err;
@@ -48,7 +48,6 @@ class JwtService extends FuseUtils.EventEmitter {
       this.setSession(access_token);
       this.emit('onAutoLogin', true);
     } else {
-      console.log('who is messing with me?', 'handleAuthentication');
       this.setSession(null);
       this.emit('onAutoLogout', 'access_token expired');
     }
@@ -77,9 +76,7 @@ class JwtService extends FuseUtils.EventEmitter {
         })
         .then((response) => {
           if (response.data.user) {
-            console.log('111', response.data.access_token);
             this.setSession(response.data.access_token);
-            resolve(response.data.user);
             this.emit('onLogin', response.data.user);
           } else {
             reject(response.data.error);
