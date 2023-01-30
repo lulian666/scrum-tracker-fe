@@ -9,20 +9,12 @@ i18next.addResourceBundle('ar', 'navigation', ar);
 
 const navigationConfig = [
   {
-    id: 'example-component',
-    title: 'Example',
-    translate: 'EXAMPLE',
-    type: 'item',
-    icon: 'heroicons-outline:star',
-    url: 'example',
-  },
-  {
     id: 'scrumboard',
     title: 'ScrumBoard',
     translate: 'ScrumBoard',
     type: 'item',
-    icon: 'heroicons-outline:star',
-    url: 'scrums',
+    icon: 'heroicons-outline:view-boards',
+    url: '',
   },
 ];
 

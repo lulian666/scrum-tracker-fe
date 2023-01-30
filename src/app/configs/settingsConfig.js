@@ -9,9 +9,9 @@ const settingsConfig = {
   customScrollbars: true,
   direction: i18n.dir(i18n.options.lng) || 'ltr', // rtl, ltr
   theme: {
-    main: themesConfig.default,
+    main: themesConfig.defaultDark,
     navbar: themesConfig.defaultDark,
-    toolbar: themesConfig.default,
+    toolbar: themesConfig.defaultDark,
     footer: themesConfig.defaultDark,
   },
   /*
@@ -23,7 +23,7 @@ const settingsConfig = {
   /*
     Default redirect url for the logged-in user,
    */
-  loginRedirectUrl: '/scrums',
+  loginRedirectUrl: '/',
 };
 
 export default settingsConfig;

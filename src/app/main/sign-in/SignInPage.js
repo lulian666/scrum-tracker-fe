@@ -1,17 +1,11 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Controller, useForm } from 'react-hook-form';
 import Button from '@mui/material/Button';
-import Checkbox from '@mui/material/Checkbox';
-import FormControl from '@mui/material/FormControl';
-import FormControlLabel from '@mui/material/FormControlLabel';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { Link } from 'react-router-dom';
 import * as yup from 'yup';
 import _ from '@lodash';
-import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
-import AvatarGroup from '@mui/material/AvatarGroup';
-import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import { useEffect } from 'react';
@@ -21,7 +15,10 @@ import jwtService from '../../auth/services/jwtService';
  * Form Validation Schema
  */
 const schema = yup.object().shape({
-  email: yup.string().email('You must enter a valid email').required('You must enter a email'),
+  email: yup
+    .string()
+    .email('You must enter a valid email')
+    .required('You must enter a email'),
   password: yup
     .string()
     .required('Please enter your password.')
@@ -44,8 +41,14 @@ function SignInPage() {
   const { isValid, dirtyFields, errors } = formState;
 
   useEffect(() => {
-    setValue('email', 'djdj6@icloud.com', { shouldDirty: true, shouldValidate: true });
-    setValue('password', 'password', { shouldDirty: true, shouldValidate: true });
+    setValue('email', 'djdj6@icloud.com', {
+      shouldDirty: true,
+      shouldValidate: true,
+    });
+    setValue('password', 'password', {
+      shouldDirty: true,
+      shouldValidate: true,
+    });
   }, [setValue]);
 
   function onSubmit({ email, password }) {
@@ -68,8 +71,6 @@ function SignInPage() {
     <div className="flex flex-col sm:flex-row items-center md:items-start sm:justify-center md:justify-start flex-1 min-w-0">
       <Paper className="h-full sm:h-auto md:flex md:items-center md:justify-end w-full sm:w-auto md:h-full md:w-1/2 py-8 px-16 sm:p-48 md:p-64 sm:rounded-2xl md:rounded-none sm:shadow md:shadow-none ltr:border-r-1 rtl:border-l-1">
         <div className="w-full max-w-320 sm:w-320 mx-auto sm:mx-0">
-          <img className="w-48" src="assets/images/logo/logo.svg" alt="logo" />
-
           <Typography className="mt-32 text-4xl font-extrabold tracking-tight leading-tight">
             Sign in
           </Typography>
@@ -123,25 +124,6 @@ function SignInPage() {
               )}
             />
 
-            <div className="flex flex-col sm:flex-row items-center justify-center sm:justify-between">
-              <Controller
-                name="remember"
-                control={control}
-                render={({ field }) => (
-                  <FormControl>
-                    <FormControlLabel
-                      label="Remember me"
-                      control={<Checkbox size="small" {...field} />}
-                    />
-                  </FormControl>
-                )}
-              />
-
-              <Link className="text-md font-medium" to="/pages/auth/forgot-password">
-                Forgot password?
-              </Link>
-            </div>
-
             <Button
               variant="contained"
               color="secondary"
@@ -153,32 +135,6 @@ function SignInPage() {
             >
               Sign in
             </Button>
-
-            <div className="flex items-center mt-32">
-              <div className="flex-auto mt-px border-t" />
-              <Typography className="mx-8" color="text.secondary">
-                Or continue with
-              </Typography>
-              <div className="flex-auto mt-px border-t" />
-            </div>
-
-            <div className="flex items-center mt-32 space-x-16">
-              <Button variant="outlined" className="flex-auto">
-                <FuseSvgIcon size={20} color="action">
-                  feather:facebook
-                </FuseSvgIcon>
-              </Button>
-              <Button variant="outlined" className="flex-auto">
-                <FuseSvgIcon size={20} color="action">
-                  feather:twitter
-                </FuseSvgIcon>
-              </Button>
-              <Button variant="outlined" className="flex-auto">
-                <FuseSvgIcon size={20} color="action">
-                  feather:github
-                </FuseSvgIcon>
-              </Button>
-            </div>
           </form>
         </div>
       </Paper>
@@ -228,35 +184,21 @@ function SignInPage() {
               <rect x="0" y="0" width="4" height="4" fill="currentColor" />
             </pattern>
           </defs>
-          <rect width="220" height="192" fill="url(#837c3e70-6c3a-44e6-8854-cc48c737b659)" />
+          <rect
+            width="220"
+            height="192"
+            fill="url(#837c3e70-6c3a-44e6-8854-cc48c737b659)"
+          />
         </Box>
 
         <div className="z-10 relative w-full max-w-2xl">
           <div className="text-7xl font-bold leading-none text-gray-100">
             <div>Welcome to</div>
-            <div>our community</div>
+            <div>Scrum Tracker</div>
           </div>
           <div className="mt-24 text-lg tracking-tight leading-6 text-gray-400">
-            Fuse helps developers to build organized and well coded dashboards full of beautiful and
-            rich modules. Join us and start building your application today.
-          </div>
-          <div className="flex items-center mt-32">
-            <AvatarGroup
-              sx={{
-                '& .MuiAvatar-root': {
-                  borderColor: 'primary.main',
-                },
-              }}
-            >
-              <Avatar src="assets/images/avatars/female-18.jpg" />
-              <Avatar src="assets/images/avatars/female-11.jpg" />
-              <Avatar src="assets/images/avatars/male-09.jpg" />
-              <Avatar src="assets/images/avatars/male-16.jpg" />
-            </AvatarGroup>
-
-            <div className="ml-16 font-medium tracking-tight text-gray-400">
-              More than 17k people joined us, it's your turn
-            </div>
+            Scrum tracker helps you build scrum boards, scrum tasks and mange
+            your project progress easily. Start building your application today.
           </div>
         </div>
       </Box>

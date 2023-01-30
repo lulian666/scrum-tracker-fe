@@ -6,7 +6,6 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import * as yup from 'yup';
 import { useSelector } from 'react-redux';
-import { selectMemberById } from '../../../../store/membersSlice';
 import CommentModel from '../../../../model/CommentModel';
 import { selectUser } from 'app/store/userSlice';
 
@@ -17,13 +16,7 @@ const schema = yup.object().shape({
   message: yup.string().required('You must enter a comment'),
 });
 
-// const defaultValues = {
-//   idMember: '63b8eece76774b831b4b5c035',
-//   message: '',
-// };
-
 function CardComment(props) {
-  // const user = useSelector((state) => selectMemberById(state, defaultValues.idMember));
   const user = useSelector(selectUser);
   const defaultValues = {
     idMember: user.uuid,
@@ -49,10 +42,9 @@ function CardComment(props) {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex -mx-8">
-      {/* <Avatar className="w-32 h-32 mx-8" alt={user.data.displayName} src={user.avatar} /> */}
       <Avatar
         className="w-32 h-32 mx-8 font-bold"
-        src={user.data.photoURL}
+        src={user.avatar}
         alt={user.data.displayName}
       >
         {user.data.displayName.charAt(0)}

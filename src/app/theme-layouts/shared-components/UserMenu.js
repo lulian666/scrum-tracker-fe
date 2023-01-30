@@ -13,7 +13,6 @@ import { selectUser } from 'app/store/userSlice';
 
 function UserMenu(props) {
   const user = useSelector(selectUser);
-  console.log('user', user)
   const [userMenu, setUserMenu] = useState(null);
 
   const userMenuClick = (event) => {
@@ -41,8 +40,8 @@ function UserMenu(props) {
           </Typography>
         </div>
 
-        {user.data.photoURL ? (
-          <Avatar className="md:mx-4" alt="user photo" src={user.data.photoURL} />
+        {user.avatar ? (
+          <Avatar className="md:mx-4" alt="user photo" src={user.avatar} />
         ) : (
           <Avatar className="md:mx-4">{user.data.displayName[0]}</Avatar>
         )}
@@ -81,18 +80,6 @@ function UserMenu(props) {
           </>
         ) : (
           <>
-            <MenuItem component={Link} to="/apps/profile" onClick={userMenuClose} role="button">
-              <ListItemIcon className="min-w-40">
-                <FuseSvgIcon>heroicons-outline:user-circle</FuseSvgIcon>
-              </ListItemIcon>
-              <ListItemText primary="My Profile" />
-            </MenuItem>
-            <MenuItem component={Link} to="/apps/mailbox" onClick={userMenuClose} role="button">
-              <ListItemIcon className="min-w-40">
-                <FuseSvgIcon>heroicons-outline:mail-open</FuseSvgIcon>
-              </ListItemIcon>
-              <ListItemText primary="Inbox" />
-            </MenuItem>
             <MenuItem
               component={NavLink}
               to="/sign-out"

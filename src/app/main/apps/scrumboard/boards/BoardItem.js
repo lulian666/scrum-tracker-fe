@@ -14,8 +14,7 @@ import { selectMembers } from '../store/membersSlice';
 function BoardItem(props) {
   const { board } = props;
   const members = useSelector(selectMembers);
-  const boardMembers = board.members.map((id) => _.find(members, { id }));
-
+  const boardMembers = board.members?.map((id) => _.find(members, { id }));
   return (
     <Card
       component={Link}
@@ -50,13 +49,13 @@ function BoardItem(props) {
           <>
             <div className="flex items-center mt-24 -space-x-6">
               <AvatarGroup max={4}>
-                {boardMembers.map((member, index) => (
-                  // <Avatar key={index} alt="member" src={member.avatar} />
-                  <Avatar
-                    key={index}
-                    alt="member"
-                    src="assets/images/avatars/female-01.jpg"
-                  />
+                {boardMembers?.map((member, index) => (
+                  <Avatar key={index} alt="member" src={member?.avatar} />
+                  // <Avatar
+                  //   key={index}
+                  //   alt="member"
+                  //   src="assets/images/avatars/female-01.jpg"
+                  // />
                 ))}
               </AvatarGroup>
             </div>

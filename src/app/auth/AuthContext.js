@@ -24,6 +24,7 @@ function AuthProvider({ children }) {
         .signInWithToken()
         .then((user) => {
           success(user, 'Signed in with JWT');
+          console.log('Signed in with JWT');
         })
         .catch((error) => {
           pass(error.message);

@@ -9,8 +9,6 @@ import Typography from '@mui/material/Typography';
 import { Link } from 'react-router-dom';
 import * as yup from 'yup';
 import _ from '@lodash';
-import AvatarGroup from '@mui/material/AvatarGroup';
-import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import FormHelperText from '@mui/material/FormHelperText';
@@ -21,13 +19,20 @@ import jwtService from '../../auth/services/jwtService';
  */
 const schema = yup.object().shape({
   displayName: yup.string().required('You must enter display name'),
-  email: yup.string().email('You must enter a valid email').required('You must enter a email'),
+  email: yup
+    .string()
+    .email('You must enter a valid email')
+    .required('You must enter a email'),
   password: yup
     .string()
     .required('Please enter your password.')
     .min(8, 'Password is too short - should be 8 chars minimum.'),
-  passwordConfirm: yup.string().oneOf([yup.ref('password'), null], 'Passwords must match'),
-  acceptTermsConditions: yup.boolean().oneOf([true], 'The terms and conditions must be accepted.'),
+  passwordConfirm: yup
+    .string()
+    .oneOf([yup.ref('password'), null], 'Passwords must match'),
+  acceptTermsConditions: yup
+    .boolean()
+    .oneOf([true], 'The terms and conditions must be accepted.'),
 });
 
 const defaultValues = {
@@ -71,8 +76,6 @@ function SignUpPage() {
     <div className="flex flex-col sm:flex-row items-center md:items-start sm:justify-center md:justify-start flex-1 min-w-0">
       <Paper className="h-full sm:h-auto md:flex md:items-center md:justify-end w-full sm:w-auto md:h-full md:w-1/2 py-8 px-16 sm:p-48 md:p-64 sm:rounded-2xl md:rounded-none sm:shadow md:shadow-none ltr:border-r-1 rtl:border-l-1">
         <div className="w-full max-w-320 sm:w-320 mx-auto sm:mx-0">
-          <img className="w-48" src="assets/images/logo/logo.svg" alt="logo" />
-
           <Typography className="mt-32 text-4xl font-extrabold tracking-tight leading-tight">
             Sign up
           </Typography>
@@ -166,12 +169,17 @@ function SignUpPage() {
               name="acceptTermsConditions"
               control={control}
               render={({ field }) => (
-                <FormControl className="items-center" error={!!errors.acceptTermsConditions}>
+                <FormControl
+                  className="items-center"
+                  error={!!errors.acceptTermsConditions}
+                >
                   <FormControlLabel
                     label="I agree to the Terms of Service and Privacy Policy"
                     control={<Checkbox size="small" {...field} />}
                   />
-                  <FormHelperText>{errors?.acceptTermsConditions?.message}</FormHelperText>
+                  <FormHelperText>
+                    {errors?.acceptTermsConditions?.message}
+                  </FormHelperText>
                 </FormControl>
               )}
             />
@@ -236,35 +244,21 @@ function SignUpPage() {
               <rect x="0" y="0" width="4" height="4" fill="currentColor" />
             </pattern>
           </defs>
-          <rect width="220" height="192" fill="url(#837c3e70-6c3a-44e6-8854-cc48c737b659)" />
+          <rect
+            width="220"
+            height="192"
+            fill="url(#837c3e70-6c3a-44e6-8854-cc48c737b659)"
+          />
         </Box>
 
         <div className="z-10 relative w-full max-w-2xl">
           <div className="text-7xl font-bold leading-none text-gray-100">
             <div>Welcome to</div>
-            <div>our community</div>
+            <div>Scrum Tracker</div>
           </div>
           <div className="mt-24 text-lg tracking-tight leading-6 text-gray-400">
-            Fuse helps developers to build organized and well coded dashboards full of beautiful and
-            rich modules. Join us and start building your application today.
-          </div>
-          <div className="flex items-center mt-32">
-            <AvatarGroup
-              sx={{
-                '& .MuiAvatar-root': {
-                  borderColor: 'primary.main',
-                },
-              }}
-            >
-              <Avatar src="assets/images/avatars/female-18.jpg" />
-              <Avatar src="assets/images/avatars/female-11.jpg" />
-              <Avatar src="assets/images/avatars/male-09.jpg" />
-              <Avatar src="assets/images/avatars/male-16.jpg" />
-            </AvatarGroup>
-
-            <div className="ml-16 font-medium tracking-tight text-gray-400">
-              More than 17k people joined us, it's your turn
-            </div>
+            Scrum tracker helps you build scrum boards, scrum tasks and mange
+            your project progress easily. Start building your application today.
           </div>
         </div>
       </Box>

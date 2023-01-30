@@ -6,12 +6,12 @@ import {
 import axios from 'axios';
 
 /**
- * Get Members
+ * Get Members. Members of all the scrums user can see
  */
 export const getMembers = createAsyncThunk(
   'scrumboardApp/members/getMembers',
   async (boardId) => {
-    const response = await axios.get(`/api/v1/boards/${boardId}/members`);
+    const response = await axios.get(`/api/v1/boards/members`);
     const data = await response.data.members;
 
     return data;
